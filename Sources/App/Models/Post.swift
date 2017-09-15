@@ -15,25 +15,20 @@ final class Post: Model {
     
     static let idKey = "id"
     static let titleKey = "title"
-    static let uniqueIdKey = "uniqueIdKey"
     
     var title: String
-    var uniqueId: String
     
-    init(title: String, uniqueId: String) {
+    init(title: String) {
         self.title = title
-        self.uniqueId = uniqueId
     }
     
     init(row: Row) throws {
         title = try row.get(Post.titleKey)
-        uniqueId = try row.get(Post.uniqueIdKey)
     }
     
     func makeRow() throws -> Row {
         var row = Row()
         try row.set(Post.titleKey, title)
-        try row.set(Post.uniqueIdKey, uniqueId)
         return row
     }
 }
@@ -43,7 +38,6 @@ extension Post: Preparation {
         try database.create(self) { builder in
             builder.id()
             builder.string(Post.titleKey)
-            builder.string(Post.uniqueIdKey)
         }
     }
     static func revert(_ database: Database) throws {
@@ -54,15 +48,13 @@ extension Post: Preparation {
 extension Post: JSONConvertible {
     convenience init(json: JSON) throws {
         try self.init(
-            title: json.get(Post.titleKey),
-            uniqueId: json.get(Post.uniqueIdKey)
+            title: json.get(Post.titleKey)
         )
     }
     func makeJSON() throws -> JSON {
         var json = JSON()
         try json.set(Post.idKey, id)
         try json.set(Post.titleKey, title)
-        try json.set(Post.uniqueIdKey, uniqueId)
         return json
     }
 }
