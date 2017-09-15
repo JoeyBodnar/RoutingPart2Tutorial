@@ -10,6 +10,8 @@ import Foundation
 import Vapor
 import FluentProvider
 
+extension Post: ResponseRepresentable {}
+
 final class Post: Model {
     let storage = Storage()
     
