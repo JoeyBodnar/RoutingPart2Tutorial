@@ -9,7 +9,6 @@
 import Foundation
 import Vapor
 
-extension PostController: EmptyInitializable { }
 
 final class PostController {
     
