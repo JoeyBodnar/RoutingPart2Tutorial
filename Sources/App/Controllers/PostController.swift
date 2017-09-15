@@ -12,6 +12,16 @@ import Vapor
 
 final class PostController {
     
+    func addRoutes(to routeBuilder: RouteBuilder) {
+        routeBuilder.post("create", handler: create)
+        routeBuilder.get("all", handler: all)
+        routeBuilder.get(Post.parameter, handler: show)
+    }
+    
+    func show(request: Request) throws -> ResponseRepresentable {
+        let post = try request.parameters.next(Post.self)
+        return post
+    }
     
     func all(request: Request) throws -> ResponseRepresentable {
         return try Post.all().makeJSON()
@@ -23,5 +33,4 @@ final class PostController {
         try post.save()
         return post
     }
-    
 }
